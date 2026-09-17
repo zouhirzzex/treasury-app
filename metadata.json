@@ -1,0 +1,6 @@
+{
+  "name": "خزينة القسم",
+  "description": "تطبيق إدارة خزينة القسم والمجموعات وحساب اشتراكات ومساهمات الأعضاء وتتبع المشتريات والمصاريف وإعادة احتساب الرصيد الإجمالي والفردي بدقة",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
