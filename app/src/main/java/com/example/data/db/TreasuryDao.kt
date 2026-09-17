@@ -52,6 +52,12 @@ interface TreasuryDao {
     @Query("UPDATE members SET paidAmount = :newAmount WHERE id = :memberId")
     suspend fun updateMemberPaidAmount(memberId: Long, newAmount: Double)
 
+    @Query("UPDATE members SET paidAmount = paidAmount + :addition WHERE id IN (:memberIds)")
+    suspend fun addAmountToMembers(memberIds: List<Long>, addition: Double)
+
+    @Query("UPDATE members SET paidAmount = :amount WHERE id IN (:memberIds)")
+    suspend fun setAmountForMembers(memberIds: List<Long>, amount: Double)
+
     // --- Purchases ---
     @Query("SELECT * FROM purchases WHERE groupId = :groupId ORDER BY dateMillis DESC")
     fun getPurchasesByGroup(groupId: Long): Flow<List<Purchase>>

@@ -534,3 +534,83 @@ fun ConfirmDeleteDialog(
         }
     )
 }
+
+@Composable
+fun BatchAddCashDialog(
+    selectedMembersCount: Int,
+    currency: String,
+    onDismiss: () -> Unit,
+    onAddCash: (amount: Double) -> Unit
+) {
+    val strings = LocalAppStrings.current
+    var customAmountText by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(Icons.Default.Money, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = strings.batchDialogTitle,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    text = "${strings.batchDialogDesc} ($selectedMembersCount ${strings.selectedCountSuffix})",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
+                    text = strings.pickQuickAmount,
+                    style = MaterialTheme.typography.labelLarge
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf(10.0, 20.0, 50.0).forEach { quickVal ->
+                        OutlinedButton(
+                            onClick = { onAddCash(quickVal) },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("+$quickVal")
+                        }
+                    }
+                }
+
+                OutlinedTextField(
+                    value = customAmountText,
+                    onValueChange = { customAmountText = it },
+                    label = { Text("${strings.orEnterCustomAmount} ($currency)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    val addAmount = customAmountText.toDoubleOrNull()
+                    if (addAmount != null && addAmount > 0) {
+                        onAddCash(addAmount)
+                    }
+                },
+                enabled = customAmountText.toDoubleOrNull() != null && (customAmountText.toDoubleOrNull() ?: 0.0) > 0
+            ) {
+                Text(strings.confirmAddition)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(strings.cancel)
+            }
+        }
+    )
+}

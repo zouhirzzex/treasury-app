@@ -310,6 +310,20 @@ class TreasuryViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    fun batchAddAmountToMembers(memberIds: List<Long>, addition: Double) {
+        if (memberIds.isEmpty() || addition <= 0.0) return
+        viewModelScope.launch {
+            repository.addAmountToMembers(memberIds, addition)
+        }
+    }
+
+    fun batchSetAmountForMembers(memberIds: List<Long>, amount: Double) {
+        if (memberIds.isEmpty()) return
+        viewModelScope.launch {
+            repository.setAmountForMembers(memberIds, amount.coerceAtLeast(0.0))
+        }
+    }
+
     // --- Purchase Actions ---
     fun addPurchase(title: String, amount: Double, category: String, buyerNotes: String, dateMillis: Long = System.currentTimeMillis()) {
         val groupId = _selectedGroupId.value ?: return
@@ -359,7 +373,7 @@ class TreasuryViewModel(application: Application) : AndroidViewModel(application
         if (isFrench) {
             sb.append("📋 *Bilan de Caisse de Classe: ${group.name}*\n")
             sb.append("📅 Date: ${dateFormat.format(Date())}\n")
-            sb.append("👤 Responsable de la caisse: Trésorier unique désigné\n")
+            sb.append("👤 Responsable de caisse: *ZOUHIR ECH-CHAHEDY*\n")
             sb.append("━━━━━━━━━━━━━━━━━━\n")
             sb.append("💰 *Situation financière générale:*\n")
             sb.append("• Total cotisé: ${"%.2f".format(sum.totalCollected)} ${group.currency}\n")
@@ -394,7 +408,7 @@ class TreasuryViewModel(application: Application) : AndroidViewModel(application
         } else {
             sb.append("📋 *تقرير خزينة القسم: ${group.name}*\n")
             sb.append("📅 التاريخ: ${dateFormat.format(Date())}\n")
-            sb.append("👤 المسؤول عن الخزينة: أمين الصندوق المكلف\n")
+            sb.append("👤 المسؤول عن الصندوق (responsable de caisse): *ZOUHIR ECH-CHAHEDY*\n")
             sb.append("━━━━━━━━━━━━━━━━━━\n")
             sb.append("💰 *الحالة المالية العامة:*\n")
             sb.append("• إجمالي المحصل: ${"%.2f".format(sum.totalCollected)} ${group.currency}\n")

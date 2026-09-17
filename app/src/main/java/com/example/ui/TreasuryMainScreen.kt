@@ -42,6 +42,7 @@ import com.example.data.model.TreasuryGroup
 import com.example.ui.components.AddEditGroupDialog
 import com.example.ui.components.AddEditMemberDialog
 import com.example.ui.components.AddEditPurchaseDialog
+import com.example.ui.components.BatchAddCashDialog
 import com.example.ui.components.ConfirmDeleteDialog
 import com.example.ui.components.MembersListSection
 import com.example.ui.components.PurchasesListSection
@@ -96,6 +97,12 @@ fun TreasuryMainScreen(
 
         var quickCashMember by remember { mutableStateOf<Member?>(null) }
         var showReportDialog by remember { mutableStateOf(false) }
+
+        // Batch selection states
+        var isSelectionMode by remember { mutableStateOf(false) }
+        var selectedMemberIds by remember { mutableStateOf(setOf<Long>()) }
+        var showBatchAddCashDialog by remember { mutableStateOf(false) }
+        var showBatchSetPaidFullConfirm by remember { mutableStateOf(false) }
 
         Scaffold(
             topBar = {
@@ -246,6 +253,37 @@ fun TreasuryMainScreen(
                                 onQuickAddCash = { quickCashMember = it },
                                 onSetPaidTarget = {
                                     viewModel.setMemberPaidFullTarget(it.id, group.targetContribution)
+                                },
+                                selectedMemberIds = selectedMemberIds,
+                                isSelectionMode = isSelectionMode,
+                                onToggleSelectionMode = {
+                                    isSelectionMode = !isSelectionMode
+                                    if (!isSelectionMode) {
+                                        selectedMemberIds = emptySet()
+                                    }
+                                },
+                                onToggleMemberSelection = { memberId ->
+                                    selectedMemberIds = if (selectedMemberIds.contains(memberId)) {
+                                        selectedMemberIds - memberId
+                                    } else {
+                                        selectedMemberIds + memberId
+                                    }
+                                },
+                                onSelectAll = {
+                                    selectedMemberIds = membersWithCalc.map { it.member.id }.toSet()
+                                },
+                                onDeselectAll = {
+                                    selectedMemberIds = emptySet()
+                                },
+                                onBatchAddCash = {
+                                    if (selectedMemberIds.isNotEmpty()) {
+                                        showBatchAddCashDialog = true
+                                    }
+                                },
+                                onBatchSetPaidFull = {
+                                    if (selectedMemberIds.isNotEmpty()) {
+                                        showBatchSetPaidFullConfirm = true
+                                    }
                                 }
                             )
                         } else {
@@ -372,6 +410,36 @@ fun TreasuryMainScreen(
                     onAddCash = { additional ->
                         viewModel.quickAddMoneyToMember(quickCashMember!!.id, quickCashMember!!.paidAmount, additional)
                         quickCashMember = null
+                    }
+                )
+            }
+
+            // Batch Add Cash Dialog (Multiple members)
+            if (showBatchAddCashDialog && currentGroup != null) {
+                BatchAddCashDialog(
+                    selectedMembersCount = selectedMemberIds.size,
+                    currency = currentGroup!!.currency,
+                    onDismiss = { showBatchAddCashDialog = false },
+                    onAddCash = { additional ->
+                        viewModel.batchAddAmountToMembers(selectedMemberIds.toList(), additional)
+                        showBatchAddCashDialog = false
+                        isSelectionMode = false
+                        selectedMemberIds = emptySet()
+                    }
+                )
+            }
+
+            // Batch Set Paid Full Confirmation Dialog
+            if (showBatchSetPaidFullConfirm && currentGroup != null) {
+                ConfirmDeleteDialog(
+                    title = strings.batchSetPaidFullBtn,
+                    message = "${strings.batchSetFullConfirmMsg} (${selectedMemberIds.size} ${strings.selectedCountSuffix} - ${currentGroup!!.targetContribution} ${currentGroup!!.currency})",
+                    onDismiss = { showBatchSetPaidFullConfirm = false },
+                    onConfirm = {
+                        viewModel.batchSetAmountForMembers(selectedMemberIds.toList(), currentGroup!!.targetContribution)
+                        showBatchSetPaidFullConfirm = false
+                        isSelectionMode = false
+                        selectedMemberIds = emptySet()
                     }
                 )
             }

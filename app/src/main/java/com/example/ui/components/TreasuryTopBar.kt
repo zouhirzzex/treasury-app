@@ -95,11 +95,29 @@ fun TreasuryTopBar(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )
-                            if (currentGroup?.academicYear?.isNotBlank() == true) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                if (currentGroup?.academicYear?.isNotBlank() == true) {
+                                    Text(
+                                        text = currentGroup.academicYear,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Text(
+                                        text = "•",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                                 Text(
-                                    text = currentGroup.academicYear,
+                                    text = strings.treasurerName,
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }

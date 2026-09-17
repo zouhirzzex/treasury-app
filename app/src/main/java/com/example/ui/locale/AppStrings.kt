@@ -103,14 +103,29 @@ data class AppStrings(
     val categoryClassEquipment: String,
     val categoryActivities: String,
     val categoryOther: String,
-    val languageSwitchLabel: String
+    val languageSwitchLabel: String,
+    // Batch selection & payment strings
+    val selectMultiple: String,
+    val selectAll: String,
+    val deselectAll: String,
+    val selectedCountSuffix: String,
+    val cancelSelection: String,
+    val batchAddMoneyBtn: String,
+    val batchSetPaidFullBtn: String,
+    val batchDialogTitle: String,
+    val batchDialogDesc: String,
+    val batchSetFullConfirmMsg: String,
+    // Treasurer info
+    val treasurerName: String,
+    val treasurerRole: String,
+    val treasurerFullSignature: String
 )
 
 val ArabicStrings = AppStrings(
-    appName = "خزينة القسم",
+    appName = "la caisse",
     appSubtitle = "إدارة مساهمات الأعضاء ومشتريات وتجهيزات القسم",
-    soleManagerBadgeTitle = "المكلف الوحيد بخزينة القسم",
-    soleManagerBadgeSub = "أنت المخول الحصري بإدارة المساهمات وخصم المشتريات وإعادة الضبط",
+    soleManagerBadgeTitle = "المسؤول عن الصندوق: ZOUHIR ECH-CHAHEDY",
+    soleManagerBadgeSub = "أمين الخزينة المكلف حصرياً بإدارة المساهمات وخصم مشتريات وتجهيزات القسم",
     netRemainingBalance = "الرصيد الصافي المتبقي في الخزينة",
     deficitAlertPrefix = "تنبيه: قيمة المشتريات فاقت مجموع المساهمات المحصلة بمقدار",
     surplusNotice = "المبلغ المتاح حالياً لشراء الدفاتر والأدوات الإضافية",
@@ -207,14 +222,27 @@ val ArabicStrings = AppStrings(
     categoryClassEquipment = "تجهيزات القسم",
     categoryActivities = "أنشطة وحفلات",
     categoryOther = "أخرى",
-    languageSwitchLabel = "Français"
+    languageSwitchLabel = "Français",
+    selectMultiple = "تحديد متعدد",
+    selectAll = "تحديد الكل",
+    deselectAll = "إلغاء تحديد الكل",
+    selectedCountSuffix = "عضو محدد",
+    cancelSelection = "إلغاء التحديد",
+    batchAddMoneyBtn = "إضافة مبلغ للمحددين",
+    batchSetPaidFullBtn = "تسديد الهدف بالكامل للمحددين",
+    batchDialogTitle = "إضافة مساهمة للأعضاء المحددين",
+    batchDialogDesc = "سيتم إضافة هذا المبلغ إلى الرصيد المدفوع لكل عضو من الأعضاء الذين تم تحديدهم دون المساس بالباقين:",
+    batchSetFullConfirmMsg = "هل تريد تعيين هدف المساهمة بالكامل لجميع الأعضاء المحددين؟",
+    treasurerName = "ZOUHIR ECH-CHAHEDY",
+    treasurerRole = "المسؤول عن الصندوق (responsable de caisse)",
+    treasurerFullSignature = "ZOUHIR ECH-CHAHEDY - المسؤول عن الصندوق (responsable de caisse)"
 )
 
 val FrenchStrings = AppStrings(
-    appName = "Caisse de Classe",
+    appName = "la caisse",
     appSubtitle = "Gestion des cotisations, fournitures et achats de classe",
-    soleManagerBadgeTitle = "Trésorier unique de la caisse",
-    soleManagerBadgeSub = "Vous êtes le seul autorisé à encaisser, déduire les achats et gérer le solde",
+    soleManagerBadgeTitle = "Responsable de caisse: ZOUHIR ECH-CHAHEDY",
+    soleManagerBadgeSub = "Trésorier unique désigné pour encaisser, déduire les achats et gérer le solde",
     netRemainingBalance = "Solde net restant dans la caisse",
     deficitAlertPrefix = "Attention: Les achats dépassent le total cotisé de",
     surplusNotice = "Montant disponible pour l'achat de fournitures et cahiers",
@@ -311,7 +339,20 @@ val FrenchStrings = AppStrings(
     categoryClassEquipment = "Aménagement de classe",
     categoryActivities = "Activités & Événements",
     categoryOther = "Autres",
-    languageSwitchLabel = "العربية"
+    languageSwitchLabel = "العربية",
+    selectMultiple = "Sélection multiple",
+    selectAll = "Tout sélectionner",
+    deselectAll = "Tout désélectionner",
+    selectedCountSuffix = "membre(s) sélectionné(s)",
+    cancelSelection = "Annuler sélection",
+    batchAddMoneyBtn = "Ajouter montant aux sélectionnés",
+    batchSetPaidFullBtn = "Valider l'objectif pour la sélection",
+    batchDialogTitle = "Cotisation groupée aux membres sélectionnés",
+    batchDialogDesc = "Ce montant sera ajouté au solde payé de chaque membre sélectionné sans toucher aux autres :",
+    batchSetFullConfirmMsg = "Voulez-vous valider le paiement complet de l'objectif pour tous les membres sélectionnés ?",
+    treasurerName = "ZOUHIR ECH-CHAHEDY",
+    treasurerRole = "Responsable de caisse",
+    treasurerFullSignature = "ZOUHIR ECH-CHAHEDY - Responsable de caisse"
 )
 
 fun getStrings(language: AppLanguage): AppStrings = when (language) {

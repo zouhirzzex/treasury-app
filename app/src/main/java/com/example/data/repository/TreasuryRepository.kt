@@ -31,6 +31,12 @@ class TreasuryRepository(private val dao: TreasuryDao) {
     suspend fun updateMemberPaidAmount(memberId: Long, newAmount: Double) =
         dao.updateMemberPaidAmount(memberId, newAmount)
 
+    suspend fun addAmountToMembers(memberIds: List<Long>, addition: Double) =
+        dao.addAmountToMembers(memberIds, addition)
+
+    suspend fun setAmountForMembers(memberIds: List<Long>, amount: Double) =
+        dao.setAmountForMembers(memberIds, amount)
+
     suspend fun insertPurchase(purchase: Purchase): Long = dao.insertPurchase(purchase)
 
     suspend fun updatePurchase(purchase: Purchase) = dao.updatePurchase(purchase)
